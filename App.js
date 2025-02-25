@@ -3,6 +3,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeNavigation from './screens/HomePage';
+import ProfilePage from './screens/ProfilePage';
 
 const Stack = createNativeStackNavigator(); // permettre de faire les écrans
 
@@ -13,6 +14,7 @@ export default function App() { // App est un composant qui return des composant
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeNavigation} />
+        <Stack.Screen name="Profile" component={ProfilePage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

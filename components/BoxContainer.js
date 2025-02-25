@@ -1,6 +1,7 @@
 import { Text, StyleSheet } from "react-native";
 import { View } from "react-native";
 
+// Exercice de cyberlearn
 const BoxContainer = () => {
     return(
     
