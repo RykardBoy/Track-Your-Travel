@@ -1,21 +1,15 @@
 import * as React from 'react';
-import { View } from "react-native"
-import { StyleSheet } from 'react-native';
+import { View, Text } from "react-native"
 
-const ProfilePage = () => {
+const ProfilePage = ({navigation}) => {
     return (
         <View>
-            <Text style={styles.titre1}>Your profile</Text>
+            <Text>Your profile</Text>
+            <Text onPress={() => navigation.navigate('Home')}>Retourner à la page d'accueil</Text>
         </View>
     )
 }
 
-const styles = StyleSheet.create({    
-    titre1:{
-    color:"green",
-    textAlign:"center",
-    fontSize:50
-}})
 
 
 
