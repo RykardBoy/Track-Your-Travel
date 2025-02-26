@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         height:"100%"
     },
     titre1:{
-        fontSize:25,
+        fontSize:30,
         textAlign:"center",
         margin:"10%",
         color:"green"
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
     text1:{
         backgroundColor:"green",
         borderRadius:5,
-        width:117,
-        height:31,
+        width:120,
+        height:35,
         textAlign:"center",
         margin:10,
         fontSize:18
