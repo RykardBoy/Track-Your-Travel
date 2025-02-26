@@ -12,11 +12,11 @@ const HomePage = ({navigation}) => {
             <View>
                 <View style={styles.text_container}>
                     <Text style={styles.text1} onPress={() => navigation.navigate('Profile')}>Your Profile</Text>
-                    <Text style={styles.text1}>Add a Travel</Text>
+                    <Text style={styles.text1} onPress={() => navigation.navigate('Travel')}>Add a Travel</Text>
                 </ View>
                 <View style={styles.text_container}>
-                    <Text style={styles.text1}>Memories</Text>
-                    <Text style={styles.text1}>In a Nutshell</Text>
+                    <Text style={styles.text1} onPress={() => navigation.navigate('Memories')}>Memories</Text>
+                    <Text style={styles.text1} onPress={() => navigation.navigate('Nutshell')}>In a Nutshell</Text>
                 </View>
                     
             </View>
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         fontSize:25,
         textAlign:"center",
         margin:"10%",
-        color:"#27873e"
+        color:"green"
     },
     text_container:{
 
