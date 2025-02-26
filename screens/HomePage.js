@@ -1,19 +1,24 @@
 import * as React from 'react';
-import { Text, View} from 'react-native';
+import { Text, View, Image} from 'react-native';
 import { StyleSheet } from 'react-native';
 
 const HomePage = ({navigation}) => {
     return(
         <View style={styles.view1}>
             <Text style={styles.titre1}>Track Your Travels</Text>
+            
+            <Image source={require("../assets/avion.png")} style={[styles.img1, {width: 150, height: 150}, {marginBottom:100}]}></Image>
+            
             <View>
                 <View style={styles.text_container}>
-                    <Text onPress={() => navigation.navigate('Profile')}>Your Profile</Text>
-                    <Text>Add a Travel</Text>
-                    <Text>Revisit Memories</Text>
-                    <Text>In a Nutshell</Text>
-
+                    <Text style={styles.text1} onPress={() => navigation.navigate('Profile')}>Your Profile</Text>
+                    <Text style={styles.text1}>Add a Travel</Text>
+                </ View>
+                <View style={styles.text_container}>
+                    <Text style={styles.text1}>Memories</Text>
+                    <Text style={styles.text1}>In a Nutshell</Text>
                 </View>
+                    
             </View>
         </View>
 
@@ -32,8 +37,26 @@ const styles = StyleSheet.create({
         color:"#27873e"
     },
     text_container:{
+
         flexDirection:"row",
-        justifyContent:"space-around"
+        justifyContent:"space-around",
+        alignItems:"center",
+        margin:10
+    },
+    text1:{
+        backgroundColor:"green",
+        borderRadius:5,
+        width:117,
+        height:31,
+        textAlign:"center",
+        margin:10,
+        fontSize:18
+
+
+    },
+    img1:{
+        alignSelf:"center",
+        
     }
 })
 export default HomePage;
