@@ -18,7 +18,7 @@ const HomePage = ({navigation}) => {
                     <Text style={styles.text1} onPress={() => navigation.navigate('Memories')}>Memories</Text>
                     <Text style={styles.text1} onPress={() => navigation.navigate('Nutshell')}>In a Nutshell</Text>
                 </View>
-                    
+                
             </View>
         </View>
 
@@ -44,15 +44,13 @@ const styles = StyleSheet.create({
         margin:10
     },
     text1:{
-        backgroundColor:"green",
+        backgroundColor:"#9fc977",
         borderRadius:5,
         width:120,
         height:35,
         textAlign:"center",
         margin:10,
         fontSize:18
-
-
     },
     img1:{
         alignSelf:"center",
