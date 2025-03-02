@@ -1,23 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, TouchableOpacity } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { FontAwesome } from "@expo/vector-icons";
 
-const StarRating = ({ maxStars = 10, onRate }) => {
-  const [rating, setRating] = useState(0);
-
-  const handlePress = (star) => {
-    setRating(star);
-    if (onRate) onRate(star);
-  };
-
+const StarRating = ({ rating, onRate }) => {
   return (
-    <View style={{ flexDirection: "row" }}>
-      {Array.from({ length: maxStars }, (_, i) => (
-        <TouchableOpacity key={i} onPress={() => handlePress(i + 1)}>
-          <Icon
-            name={i < rating ? "star" : "star-border"}
-            size={30}
-            color={i < rating ? "#FFD700" : "#ccc"}
+    <View style={{ flexDirection: "row", justifyContent:"space-between" }}>
+      {[1, 2, 3, 4, 5].map((star) => (
+        <TouchableOpacity key={star} onPress={() => onRate(star)}>
+          <FontAwesome
+            name={star <= rating ? "star" : "star-o"}
+            size={32}
+            color={star <= rating ? "yellow" : "gray"}
           />
         </TouchableOpacity>
       ))}

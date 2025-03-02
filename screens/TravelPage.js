@@ -1,20 +1,25 @@
 import * as React from 'react';
-import { View, Text } from "react-native";
+import { useState } from "react";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import { StyleSheet } from 'react-native';
 import { TextInput } from 'react-native';
-import { Button } from 'react-native-web';
-import { StarRating } from '../components/StarRating';
+import StarRating from '../components/StarRating';
 
 const TravelPage = () => {
     const [number, onChangeNumber] = React.useState('');
-
+    const [rating, setRating] = useState(0);
     return(
         <View style={styles.view1}>
-            <View>
+            <View style={styles.espacement}>
                 <Text style={styles.titre1}>Where did you go ?</Text>
             </View>
-            <View>
-                <Text> Choose a destination <br></br>
+
+            <View style={styles.espacement}>
+                <View>
+                    <Text style={[styles.texte, {paddingBottom:10}] }>Choose a destination
+                        <Image source={require('../assets/destination.png')} style={styles.image}></Image>
+                    </Text>
+                </View>
                     <select name="listePays">
                         <option name="CR">Croatie</option>
                         <option name="PH">Philippines</option>
@@ -22,25 +27,38 @@ const TravelPage = () => {
                         <option name="JA">Japon</option>
                         <option name="ES">Espagne</option>
                     </select>
-                </Text>
-                
             </View>
-            <View>
-                <Text>Describe your activities</Text>
+
+            <View style={styles.espacement}>
+                <Text style={[styles.texte, {paddingBottom:10}]}>Describe your activities
+                    <Image source={require('../assets/extracurricular-activities.png')} style={styles.image}></Image>
+                </Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={onChangeNumber}
                     value={number}
-                    placeholder='Describe your activities'
+                    placeholder='snorkling, sleeping..'
                 />
             </View>
-            <View>
-                <Text>Save your adventure with pictures</Text>
-                <Button>Add pictures</Button>
+
+            <View style={styles.espacement}>
+                <Text style={[styles.texte, {paddingBottom:10}] }>Save your adventure with pictures</Text>
+                <TouchableOpacity style={{ backgroundColor:'#9fc977', padding:10, borderRadius:5  }}>
+                    <Text style={{ color: 'black', fontSize: 16, textAlign:"center"}}>Add pictures <Image source={require('../assets/pictures.png')} style={styles.image}></Image>
+                </Text>
+                </TouchableOpacity>
             </View>
-            <View >
-                <Text>Donnez votre appréciation :</Text>
-                <StarRating />
+
+            <View style={styles.espacement} >
+                <Text style={[styles.texte, {paddingBottom:10}] }>Give a grade to this trip 
+                    <Image source={require('../assets/grades.png')} style={styles.image}></Image>
+                </Text>
+                <StarRating rating={rating} onRate={setRating} />
+            </View>
+            <View style={styles.espacement}>
+                <TouchableOpacity style={{ backgroundColor:'#9fc977', padding:10, borderRadius:5, alignItems:"center"  }}>
+                    <Image source={require('../assets/diskette.png')} style={styles.image}></Image>
+                </TouchableOpacity>
             </View>
         </View>
     )
@@ -50,16 +68,26 @@ const styles = StyleSheet.create({
     view1:{
         backgroundColor : "#afd2e0",
         height:"100%"
-    },    
+    },
+    texte:{
+        fontSize:16
+    }, 
     titre1:{
         fontSize:40,
         textAlign:"center"
-    },input: {
-        height: 30,
-        margin: 12,
+    },input:{
+        height: 40,
+        
         borderWidth: 1,
         padding: 5,
-      }
+    },
+    espacement:{
+        margin:10,
+        padding:5
+    },image:{
+        width:30,
+        height:30
+    }
 })
 
 
