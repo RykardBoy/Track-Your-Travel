@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { useState } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import { StyleSheet } from 'react-native';
-import { TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from "react-native";
 import StarRating from '../components/StarRating';
 
 const TravelPage = () => {
@@ -42,9 +40,11 @@ const TravelPage = () => {
             </View>
 
             <View style={styles.espacement}>
-                <Text style={[styles.texte, {paddingBottom:10}] }>Save your adventure with pictures</Text>
+                <Text style={[styles.texte, {paddingBottom:10}] }>Save your adventure with pictures
+                    <Image source={require('../assets/pictures.png')} style={styles.image}></Image> 
+                </Text>
                 <TouchableOpacity style={{ backgroundColor:'#9fc977', padding:10, borderRadius:5  }}>
-                    <Text style={{ color: 'black', fontSize: 16, textAlign:"center"}}>Add pictures <Image source={require('../assets/pictures.png')} style={styles.image}></Image>
+                    <Text style={{ color: 'black', fontSize: 16, textAlign:"center"}}>Add pictures 
                 </Text>
                 </TouchableOpacity>
             </View>
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         height:"100%"
     },
     texte:{
-        fontSize:16
+        fontSize:18
     }, 
     titre1:{
         fontSize:40,
