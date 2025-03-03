@@ -40,8 +40,8 @@ const NutshellPage = () => {
 
 
     return(
-        <View style={styles.container}>
-            <Text style={styles.title}>Your Travel Summary</Text>
+        <View style={styles.view1}>
+            <Text style={styles.titre1}>Your Travel Summary</Text>
             <FlatList 
                 data={data}
                 keyExtractor={(item) => item.id}
@@ -66,24 +66,24 @@ const NutshellPage = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    view1: {
         flex: 1,
         padding: 20,
         alignItems: 'center',
         backgroundColor: '#afd2e0',
     },
-    title: {
+    titre1: {
         fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 20,
-        color: '#333',
+        color: 'black',
     },
     card: {
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#9fc977',
         padding: 15,
-        marginVertical: 8,
+        marginVertical: 32,
         borderRadius: 10,
         width: '90%',
         shadowColor: '#000',
@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     text: {
-        fontSize: 16,
-        color: '#555',
+        fontSize: 18,
+        color: 'black',
         marginLeft: 10,
     },
     detailsContainer: {
@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
         width: '80%'
     },
     detailText: {
-        fontSize: 14,
-        color: '#333',
+        fontSize: 16,
+        color: 'black',
     }
 })
 

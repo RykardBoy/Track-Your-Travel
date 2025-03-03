@@ -31,7 +31,7 @@ const MainNavigation = () => {
         <Stack.Screen 
           name="Nutshell" 
           component={NutshellPage} 
-          options={{title: 'Numbers and Graphs'}}
+          options={{title: 'Statistics'}}
         />
         <Stack.Screen 
           name="Travel" 
