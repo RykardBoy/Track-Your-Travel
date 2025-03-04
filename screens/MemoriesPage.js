@@ -1,42 +1,42 @@
+import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 
 const memories = [
     {
         id: '1',
         title: 'Philippines beach',
-        description: 'We ate a lot and swimmed with whale-sharks',
-        image : require('../assets/ph.jpg')
-
-
+        description: 'We ate a lot and swam with whale sharks',
+        image: require('../assets/ph.jpg') // ✅ Ne pas l'utiliser avec uri
     },
     {
         id: '2',
         title: 'Hiking in Switzerland',
         description: 'Exploring the Swiss Alps with breathtaking views.',
-        image: ''
+        image: require('../assets/ph.jpg')
     },
     {
         id: '3',
         title: 'Street Food in Bangkok',
         description: 'Tasting delicious street food in the vibrant markets of Bangkok.',
-        image: ''
+        image: require('../assets/ph.jpg')
     }
 ];
 
 const MemoriesPage = () => {
     return (
-        <View style={[styles.view1, {pointerEvents:"auto"}]}>
+        <View style={styles.view1} pointerEvents="auto"> 
             <Text style={styles.titre}>Travel Memories</Text>
             <FlatList 
                 data={memories}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                     <View style={styles.card}>
-                        <Image source={{ uri: item.image }} style={styles.image} />
+                        <Image source={item.image} style={styles.image} /> 
                         <Text style={styles.cardTitle}>{item.title}</Text>
                         <Text style={styles.cardDescription}>{item.description}</Text>
                     </View>
                 )}
+                contentContainerStyle={{ alignItems: 'center' }} // ✅ Pour centrer les éléments
             />
         </View>
     );
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     image: {
-        width: '100%',
+        width: 250, // ✅ Largeur fixe au lieu de '100%' pour éviter les bugs
         height: 150,
         borderRadius: 8,
         marginBottom: 10,

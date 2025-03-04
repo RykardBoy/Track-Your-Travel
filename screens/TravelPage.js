@@ -14,16 +14,15 @@ const TravelPage = () => {
                 <Text style={styles.titre1}>Where did you go ?</Text>
             </View>
 
-                <View>
-                    <Text style={[styles.texte, {paddingBottom:10}] }>Choose a destination
-                        <Image source={require('../assets/destination.png')} style={styles.image}></Image>
-                    </Text>
-                </View>
+            <View style={styles.espacement}>
+                <Text style={[styles.texte, {paddingBottom:10}] }>Choose a destination
+                    <Image source={require('../assets/destination.png')} style={styles.image}></Image>
+                </Text>
+            </View>
             <View style={styles.container}>
                 <Picker
                     selectedValue={selectedCountry}
                     onValueChange={(itemValue) => setSelectedCountry(itemValue)}
-                    
                 >
                     <Picker.Item label="Croatie" value="CR" />
                     <Picker.Item label="Philippines" value="PH" />
@@ -87,8 +86,8 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     espacement:{
-        margin:10,
-        padding:5
+        margin:8,
+        padding:2
     },image:{
         width:30,
         height:30
