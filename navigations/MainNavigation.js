@@ -6,6 +6,7 @@ import ProfilePage from '../screens/ProfilePage';
 import MemoriesPage from '../screens/MemoriesPage';
 import NutshellPage from '../screens/NutshellPage';
 import TravelPage from '../screens/TravelPage';
+import LoginPage from '../screens/LoginPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +14,11 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={LoginPage}
+          options={{title : 'Login'}}
+        />
         <Stack.Screen
           name="Home"
           component={HomePage}

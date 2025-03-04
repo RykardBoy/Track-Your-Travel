@@ -4,9 +4,9 @@ import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 const memories = [
     {
         id: '1',
-        title: 'Philippines beach',
+        title: 'Philippines',
         description: 'We ate a lot and swam with whale sharks',
-        image: require('../assets/ph.jpg') // ✅ Ne pas l'utiliser avec uri
+        image: require('../assets/ph.jpg')
     },
     {
         id: '2',
@@ -36,7 +36,7 @@ const MemoriesPage = () => {
                         <Text style={styles.cardDescription}>{item.description}</Text>
                     </View>
                 )}
-                contentContainerStyle={{ alignItems: 'center' }} // ✅ Pour centrer les éléments
+                contentContainerStyle={{ alignItems: 'center' }}
             />
         </View>
     );
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     image: {
-        width: 250, // ✅ Largeur fixe au lieu de '100%' pour éviter les bugs
+        width: 250,
         height: 150,
         borderRadius: 8,
         marginBottom: 10,
