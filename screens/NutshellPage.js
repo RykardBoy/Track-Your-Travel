@@ -4,7 +4,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useState } from 'react';
 
 const NutshellPage = () => {
-    
     const [expanded, setExpanded] = useState(null);
 
     const data = [
@@ -38,17 +37,16 @@ const NutshellPage = () => {
         setExpanded(expanded === id ? null : id);
     };
 
-
-    return(
+    return (
         <View style={styles.view1}>
             <Text style={styles.titre1}>Your Travel Summary</Text>
             <FlatList 
                 data={data}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <View>
+                    <View style={styles.cardContainer}>
                         <TouchableOpacity style={styles.card} onPress={() => toggleExpand(item.id)}> 
-                            <FontAwesome5 name={item.icon} size={24} color="#4A90E2" />
+                            <FontAwesome5 name={item.icon} size={26} color="#4A90E2" />
                             <Text style={styles.text}>{item.title}</Text>
                         </TouchableOpacity>
                         {expanded === item.id && (
@@ -62,7 +60,7 @@ const NutshellPage = () => {
                 )}
             />
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -73,41 +71,58 @@ const styles = StyleSheet.create({
         backgroundColor: '#afd2e0',
     },
     titre1: {
-        fontSize: 22,
+        fontSize: 28,
         fontWeight: 'bold',
         marginBottom: 20,
-        color: 'black',
+        color: '#333',
+        textAlign: 'center',
+    },
+    cardContainer: {
+        width: '100%',
+        alignItems: 'center',
+        marginBottom: 15,
     },
     card: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#9fc977',
-        padding: 15,
-        marginVertical: 32,
-        borderRadius: 10,
+        backgroundColor: '#fff',
+        paddingVertical: 18,
+        paddingHorizontal: 20,
+        marginVertical: 8,
+        borderRadius: 12,
         width: '90%',
         shadowColor: '#000',
         shadowOpacity: 0.1,
-        shadowRadius: 5,
-        elevation: 3,
+        shadowRadius: 8,
+        elevation: 5,
+        borderWidth: 0.5,
+        borderColor: '#ddd',
     },
     text: {
-        fontSize: 18,
-        color: 'black',
-        marginLeft: 10,
+        fontSize: 20,
+        color: '#333',
+        marginLeft: 15,
+        fontWeight: '500',
     },
     detailsContainer: {
-        backgroundColor: '#E0E0E0',
-        padding: 10,
+        backgroundColor: '#fff',
+        padding: 15,
         borderRadius: 8,
         marginTop: 5,
         marginLeft: 20,
-        width: '80%'
+        width: '90%',
+        shadowColor: '#000',
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 4,
+        borderLeftWidth: 5,
+        borderLeftColor: '#4A90E2',
     },
     detailText: {
         fontSize: 16,
-        color: 'black',
-    }
-})
+        color: '#333',
+        marginBottom: 5,
+    },
+});
 
 export default NutshellPage;
