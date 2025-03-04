@@ -5,7 +5,7 @@ const memories = [
         id: '1',
         title: 'Philippines beach',
         description: 'We ate a lot and swimmed with whale-sharks',
-        image : <Image source={require('/home/ricardo/my-app/assets/ph.jpg')} ></Image>
+        image : require('../assets/ph.jpg')
 
 
     },

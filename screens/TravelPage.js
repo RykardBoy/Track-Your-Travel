@@ -1,32 +1,38 @@
 import * as React from 'react';
 import { useState } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import StarRating from '../components/StarRating';
 
 const TravelPage = () => {
     const [number, onChangeNumber] = React.useState('');
     const [rating, setRating] = useState(0);
+    const [selectedCountry, setSelectedCountry] = useState("CR");
     return(
         <View style={styles.view1}>
             <View style={styles.espacement}>
                 <Text style={styles.titre1}>Where did you go ?</Text>
             </View>
 
-            <View style={styles.espacement}>
                 <View>
                     <Text style={[styles.texte, {paddingBottom:10}] }>Choose a destination
                         <Image source={require('../assets/destination.png')} style={styles.image}></Image>
                     </Text>
                 </View>
-                    <select name="listePays">
-                        <option name="CR">Croatie</option>
-                        <option name="PH">Philippines</option>
-                        <option name="BR">Brésil</option>
-                        <option name="JA">Japon</option>
-                        <option name="ES">Espagne</option>
-                    </select>
+            <View style={styles.container}>
+                <Picker
+                    selectedValue={selectedCountry}
+                    onValueChange={(itemValue) => setSelectedCountry(itemValue)}
+                    
+                >
+                    <Picker.Item label="Croatie" value="CR" />
+                    <Picker.Item label="Philippines" value="PH" />
+                    <Picker.Item label="Brésil" value="BR" />
+                    <Picker.Item label="Japon" value="JA" />
+                    <Picker.Item label="Espagne" value="ES" />
+                </Picker>
             </View>
-
+                    
             <View style={styles.espacement}>
                 <Text style={[styles.texte, {paddingBottom:10}]}>Describe your activities
                     <Image source={require('../assets/extracurricular-activities.png')} style={styles.image}></Image>
@@ -77,7 +83,6 @@ const styles = StyleSheet.create({
         textAlign:"center"
     },input:{
         height: 40,
-        
         borderWidth: 1,
         padding: 5,
     },
@@ -87,7 +92,12 @@ const styles = StyleSheet.create({
     },image:{
         width:30,
         height:30
-    }
+    },
+    container: {
+        backgroundColor: "#afd2e0",
+      },
+
+      
 })
 
 
