@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const LoginPage = ({ navigation }) => { // Ajoute navigation ici
+const LoginPage = ({ navigation }) => { 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        // Vérification simple (tu peux ajouter ton backend ici)
         if (email && password) {
             navigation.navigate('Home'); // Redirection vers la Homepage
         } else {
@@ -21,7 +20,7 @@ const LoginPage = ({ navigation }) => { // Ajoute navigation ici
 
             <TextInput
                 style={styles.input}
-                placeholder="Email"
+                placeholder="Username"
                 placeholderTextColor="#777"
                 value={email}
                 onChangeText={setEmail}
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#afd2e0',
         paddingHorizontal: 20,
     },
     title: {

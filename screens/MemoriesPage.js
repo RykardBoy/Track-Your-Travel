@@ -10,14 +10,14 @@ const memories = [
     },
     {
         id: '2',
-        title: 'Hiking in Switzerland',
+        title: 'Switzerland',
         description: 'Exploring the Swiss Alps with breathtaking views.',
         image: require('../assets/sw-hiking.jpg')
     },
     {
         id: '3',
-        title: 'Street Food in Bangkok',
-        description: 'Tasting delicious street food in the vibrant markets of Bangkok.',
+        title: 'Croatia',
+        description: 'Tasting delicious street food in the vibrant markets of Split.',
         image: require('../assets/cr.jpg')
     }
 ];
