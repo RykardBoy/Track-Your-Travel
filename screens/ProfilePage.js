@@ -54,18 +54,77 @@ const ProfilePage = () => {
 };
 
 const styles = StyleSheet.create({
-    view1: { flex: 1, backgroundColor: "#afd2e0", alignItems: "center", justifyContent: "center" },
-    titre1: { fontSize: 32, fontWeight: "bold", textAlign: "center", color: "#333", marginBottom: 20 },
-    image1: { width: 150, height: 150, marginBottom: 20 },
-    container1: { backgroundColor: "#9fc977", borderRadius: 10, padding: 20, width: "85%", alignItems: "center", shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 3, elevation: 3, marginBottom: 20 },
-    infoText: { fontSize: 18, color: "#333", marginBottom: 8 },
-    bold: { fontWeight: "bold" },
-    bouton1: { backgroundColor: "#9fc977", borderRadius: 10, paddingVertical: 12, paddingHorizontal: 20, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 3, elevation: 3 },
-    boutonText: { fontSize: 18, fontWeight: "bold", color: "#fff", textAlign: "center" },
-    modalContainer: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.5)" },
-    modalContent: { backgroundColor: "#fff", padding: 20, borderRadius: 10, width: "80%", alignItems: "center" },
-    modalTitle: { fontSize: 22, fontWeight: "bold", marginBottom: 10 },
-    input: { width: "100%", height: 40, borderColor: "#ccc", borderWidth: 1, borderRadius: 5, marginBottom: 10, paddingHorizontal: 10 }
+    view1: { 
+        flex: 1, 
+        backgroundColor: "#afd2e0", 
+        alignItems: "center", 
+        justifyContent: "center" },
+    titre1: { 
+        fontSize: 32, 
+        fontWeight: "bold", 
+        textAlign: "center", 
+        color: "#333", 
+        marginBottom: 20 },
+    image1: { 
+        width: 150, 
+        height: 150, 
+        marginBottom: 20 },
+    container1: { 
+        backgroundColor: "#9fc977", 
+        borderRadius: 10, 
+        padding: 20, 
+        width: "85%", 
+        alignItems: "center", 
+        shadowColor: "#000", 
+        shadowOffset: { width: 0, height: 2 }, 
+        shadowOpacity: 0.2, 
+        shadowRadius: 3, 
+        elevation: 3, 
+        marginBottom: 20 },
+    infoText: { 
+        fontSize: 18, 
+        color: "#333", 
+        marginBottom: 8 },
+    bold: { 
+        fontWeight: "bold" },
+    bouton1: { 
+        backgroundColor: "#9fc977", 
+        borderRadius: 10, 
+        paddingVertical: 12, 
+        paddingHorizontal: 20, 
+        shadowColor: "#000", 
+        shadowOffset: { width: 0, height: 2 }, 
+        shadowOpacity: 0.2, 
+        shadowRadius: 3, 
+        elevation: 3 },
+    boutonText: { 
+        fontSize: 18, 
+        fontWeight: "bold", 
+        color: "#fff", 
+        textAlign: "center" },
+    modalContainer: { 
+        flex: 1, 
+        justifyContent: "center", 
+        alignItems: "center", 
+        backgroundColor: "rgba(0, 0, 0, 0.5)" },
+    modalContent: { 
+        backgroundColor: "#fff", 
+        padding: 20, 
+        borderRadius: 10, 
+        width: "80%", 
+        alignItems: "center" },
+    modalTitle: { 
+        fontSize: 22, 
+        fontWeight: "bold", 
+        marginBottom: 10 },
+    input: { 
+        width: "100%", 
+        height: 40, 
+        borderColor: "#ccc", 
+        borderWidth: 1, 
+        borderRadius: 5, 
+        marginBottom: 10, 
+        paddingHorizontal: 10 }
 });
 
 export default ProfilePage;
