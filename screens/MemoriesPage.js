@@ -1,5 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import MemoriesDetails from '../components/MemoriesDetails';
+
 
 const memories = [
     {
@@ -23,20 +25,37 @@ const memories = [
 ];
 
 const MemoriesPage = () => {
+    const [selectedMemory, setSelectedMemory] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const openMemoryDetails = (memory) => {
+        setSelectedMemory(memory);
+        setModalVisible(true);
+    };
+
     return (
-        <View style={styles.view1} pointerEvents="auto"> 
+        <View style={styles.view1}>
             <Text style={styles.titre}>Travel Memories</Text>
             <FlatList 
                 data={memories}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <View style={styles.card}>
-                        <Image source={item.image} style={styles.image} /> 
-                        <Text style={styles.cardTitle}>{item.title}</Text>
-                        <Text style={styles.cardDescription}>{item.description}</Text>
-                    </View>
+                    <TouchableOpacity onPress={() => openMemoryDetails(item)}>
+                        <View style={styles.card}>
+                            <Image source={item.image} style={styles.image} /> 
+                            <Text style={styles.cardTitle}>{item.title}</Text>
+                            <Text style={styles.cardDescription}>{item.description}</Text>
+                        </View>
+                    </TouchableOpacity>
                 )}
                 contentContainerStyle={{ alignItems: 'center' }}
+            />
+
+            {/* Pop-up */}
+            <MemoriesDetails 
+                visible={modalVisible} 
+                memory={selectedMemory} 
+                onClose={() => setModalVisible(false)} 
             />
         </View>
     );
