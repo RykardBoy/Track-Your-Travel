@@ -1,4 +1,5 @@
 const MemoriesDetails = () => {
+// a compléter si possible
     return(
         <View>
 

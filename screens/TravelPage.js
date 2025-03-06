@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import StarRating from '../components/StarRating';
 
@@ -8,6 +8,12 @@ const TravelPage = () => {
     const [number, onChangeNumber] = useState('');
     const [rating, setRating] = useState(0);
     const [selectedCountry, setSelectedCountry] = useState("CR");
+    const [saved, setSaved] = useState(false);
+
+    const handleSave = () => {
+        setSaved(true);
+        setTimeout(() => setSaved(false), 3000);
+    };
 
     return (
         <View style={styles.view1}>
@@ -60,9 +66,12 @@ const TravelPage = () => {
             <StarRating rating={rating} onRate={setRating} />
 
             {/* Save Button */}
-            <TouchableOpacity style={styles.saveButton}>
+            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
                 <Image source={require('../assets/diskette.png')} style={styles.image} />
             </TouchableOpacity>
+
+            {/* Save Confirmation Message */}
+            {saved && <Text style={styles.savedMessage}>Trip saved successfully!</Text>}
         </View>
     );
 };
@@ -144,6 +153,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 3,
+    },
+    savedMessage: {
+        marginTop: 15,
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "green",
     },
 });
 

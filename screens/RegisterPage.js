@@ -1,39 +1,27 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import RegisterPage from './RegisterPage';
 
-
-const LoginPage = ({ navigation }) => { 
+const RegisterPage = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        if (email && password) {
-            navigation.navigate('Home'); // Redirection vers la Homepage
-        } else {
-            alert('Please enter valid credentials.');
-        }
-    };
-
     const handleRegister = () => {
-        navigation.navigate('Register'); // Redirection vers la page d'inscription
+        alert('Registration successful!');
+        navigation.navigate('Login');
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Welcome Back!</Text>
-            <Text style={styles.subtitle}>Login to your account</Text>
-
+            <Text style={styles.title}>Create an Account</Text>
             <TextInput
                 style={styles.input}
-                placeholder="Username"
+                placeholder="Email"
                 placeholderTextColor="#777"
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
                 autoCapitalize="none"
             />
-
             <TextInput
                 style={styles.input}
                 placeholder="Password"
@@ -42,14 +30,8 @@ const LoginPage = ({ navigation }) => {
                 onChangeText={setPassword}
                 secureTextEntry
             />
-
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-
-            <Text style={styles.registerText}>Don't have an account?</Text>
-            <TouchableOpacity onPress={handleRegister}>
-                <Text style={styles.registerLink}>Register here</Text>
+            <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+                <Text style={styles.buttonText}>Register</Text>
             </TouchableOpacity>
         </View>
     );
@@ -69,11 +51,6 @@ const styles = StyleSheet.create({
         color: '#333',
         marginBottom: 5,
     },
-    subtitle: {
-        fontSize: 16,
-        color: '#777',
-        marginBottom: 30,
-    },
     input: {
         width: '90%',
         height: 50,
@@ -89,7 +66,7 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 3,
     },
-    loginButton: {
+    registerButton: {
         backgroundColor: '#4A90E2',
         borderRadius: 10,
         paddingVertical: 12,
@@ -105,18 +82,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff',
         textAlign: 'center',
-    },
-    registerText: {
-        marginTop: 20,
-        fontSize: 16,
-        color: '#333',
-    },
-    registerLink: {
-        fontSize: 16,
-        color: '#4A90E2',
-        fontWeight: 'bold',
-        marginTop: 5,
     }
 });
 
-export default LoginPage;
+export default RegisterPage;

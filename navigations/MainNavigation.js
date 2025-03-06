@@ -7,6 +7,8 @@ import MemoriesPage from '../screens/MemoriesPage';
 import NutshellPage from '../screens/NutshellPage';
 import TravelPage from '../screens/TravelPage';
 import LoginPage from '../screens/LoginPage';
+import RegisterPage from '../screens/RegisterPage';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +46,11 @@ const MainNavigation = () => {
           component={TravelPage} 
           options={{title: 'Travel'}}
         />
+        <Stack.Screen 
+        name="Register" 
+        component={RegisterPage} 
+        options={{title: 'Register'}}
+      />
       </Stack.Navigator>
     </NavigationContainer>
   );
