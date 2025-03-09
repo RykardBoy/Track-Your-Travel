@@ -1,0 +1,1 @@
+This is a small project made on react-native that allows you to register all of your travels and keep a record of every country visited instead of losing all of your pictures in the library. For the moment, only the frond end is working.
