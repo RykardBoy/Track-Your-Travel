@@ -9,7 +9,6 @@ import TravelPage from '../screens/TravelPage';
 import LoginPage from '../screens/LoginPage';
 import RegisterPage from '../screens/RegisterPage';
 
-
 const Stack = createNativeStackNavigator();
 
 const MainNavigation = () => {

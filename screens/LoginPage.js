@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import RegisterPage from './RegisterPage';
+import MainNavigation from '../navigations/MainNavigation';
 
 
 const LoginPage = ({ navigation }) => { 
+    const base = "http://10.177.235.226/api/";
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
