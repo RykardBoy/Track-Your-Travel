@@ -2,20 +2,44 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import RegisterPage from './RegisterPage';
 import MainNavigation from '../navigations/MainNavigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const LoginPage = ({ navigation }) => { 
-    const base = "http://10.177.235.226/api/";
-    const [email, setEmail] = useState('');
+    
+    // COMMANDE QU'IL FAUT LANCER POUR NGROK : ngrok http http://localhost:8000
+    
+    const base = "https://e89b-2a02-aa17-282-3200-520d-9cee-5332-1638.ngrok-free.app/api/login"; // --> changer l'adresse à chaque lancement d'ngrok
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        if (email && password) {
-            navigation.navigate('Home'); // Redirection vers la Homepage
-        } else {
-            alert('Please enter valid credentials.');
+    const handleLogin = async () => {
+        try {
+          const response = await fetch(`${base}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+          });
+
+          const text = await response.text(); // ← 🔍 debug ici
+          console.log('Réponse brute du serveur :', text); // ← debug visible dans Metro
+    
+          const data = JSON.parse(text);
+          let token = data['token'];
+          let tokenCorriger = token.substring(4, 100);
+          console.log(tokenCorriger);
+          
+          if (response.ok && tokenCorriger) {
+            await AsyncStorage.setItem('token', tokenCorriger);
+            console.log("Connexion Réussie !")
+            navigation.navigate('Home');
+          }
+        } catch (error) {
+          console.log('Erreur de connexion', error);
         }
-    };
+      };
 
     const handleRegister = () => {
         navigation.navigate('Register'); // Redirection vers la page d'inscription
@@ -30,9 +54,8 @@ const LoginPage = ({ navigation }) => {
                 style={styles.input}
                 placeholder="Username"
                 placeholderTextColor="#777"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
+                value={username}
+                onChangeText={setUsername}
                 autoCapitalize="none"
             />
 
