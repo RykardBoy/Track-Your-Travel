@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 const RegisterPage = ({ navigation }) => {
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
+    const [country, setCountry] = useState('');
     const [password, setPassword] = useState('');
 
     const handleRegister = () => {
@@ -15,12 +19,43 @@ const RegisterPage = ({ navigation }) => {
             <Text style={styles.title}>Create an Account</Text>
             <TextInput
                 style={styles.input}
+                placeholder="Firstname"
+                placeholderTextColor="#777"
+                value={firstname}
+                onChangeText={setFirstname}
+                autoCapitalize="none"
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Lastname"
+                placeholderTextColor="#777"
+                value={lastname}
+                onChangeText={setLastname}
+                
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Username"
+                placeholderTextColor="#777"
+                value={username}
+                onChangeText={setUsername}
+                
+            />
+            <TextInput
+                style={styles.input}
                 placeholder="Email"
                 placeholderTextColor="#777"
                 value={email}
                 onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
+                
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Country"
+                placeholderTextColor="#777"
+                value={country}
+                onChangeText={setCountry}
+                
             />
             <TextInput
                 style={styles.input}

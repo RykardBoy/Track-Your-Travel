@@ -9,7 +9,7 @@ const LoginPage = ({ navigation }) => {
     
     // COMMANDE QU'IL FAUT LANCER POUR NGROK : ngrok http http://localhost:8000
     
-    const base = "https://e89b-2a02-aa17-282-3200-520d-9cee-5332-1638.ngrok-free.app/api/login"; // --> changer l'adresse à chaque lancement d'ngrok
+    const base = "http://10.177.235.226:8000/api/login"; // --> changer l'adresse à chaque lancement d'ngrok
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -23,7 +23,7 @@ const LoginPage = ({ navigation }) => {
             body: JSON.stringify({ username, password }),
           });
 
-          const text = await response.text(); // ← 🔍 debug ici
+          const text = await response.text();
           console.log('Réponse brute du serveur :', text); // ← debug visible dans Metro
     
           const data = JSON.parse(text);
