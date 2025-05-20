@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, Modal, TextInput } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -9,7 +9,6 @@ const ProfilePage = () => {
     const [nom, setNom] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
     const [country, setCountry] = useState("");
 
     const handleAffichage = async () => {
@@ -28,11 +27,19 @@ const ProfilePage = () => {
             const text = await data.text();
             const json = await JSON.parse(text);
             console.log(json);
+            setPrenom(json['firstname']);
+            setNom(json['lastname']);
+            setUsername(json['username']);
+            setEmail(json['email']);
+            setCountry(json['country']);
         } catch (error) {
             console.log("Erreur d'affichage : " + error);
         }
     }
-    handleAffichage();
+    
+    useEffect(()=>{
+        handleAffichage();
+    },[])
     
     return (
         <View style={styles.view1}>
@@ -44,7 +51,6 @@ const ProfilePage = () => {
                 <Text style={styles.infoText}><Text style={styles.bold}>Nom:</Text> {nom}</Text>
                 <Text style={styles.infoText}><Text style={styles.bold}>Username:</Text> {username}</Text>
                 <Text style={styles.infoText}><Text style={styles.bold}>Email:</Text> {email}</Text>
-                <Text style={styles.infoText}><Text style={styles.bold}>Mobile phone:</Text> {phone}</Text>
                 <Text style={styles.infoText}><Text style={styles.bold}>Country:</Text> {country}</Text>
             </View>
 
@@ -65,7 +71,6 @@ const ProfilePage = () => {
                         <TextInput style={styles.input} value={nom} onChangeText={setNom} placeholder="Nom" />
                         <TextInput style={styles.input} value={username} onChangeText={setUsername} placeholder="Username" />
                         <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="Email" keyboardType="email-address" />
-                        <TextInput style={styles.input} value={phone} onChangeText={setPhone} placeholder="Mobile phone" keyboardType="phone-pad" />
                         <TextInput style={styles.input} value={country} onChangeText={setCountry} placeholder="Country" />
                         <Pressable style={styles.bouton1} onPress={() => setModalVisible(false)}>
                             <Text style={styles.boutonText}>Save</Text>
