@@ -3,7 +3,7 @@ import { View, Text, Image, Pressable, StyleSheet, Modal, TextInput } from "reac
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfilePage = () => {
-    const base = "http://10.177.235.226:8000/api/user/";
+    const base = "http://10.177.235.226:8000/api/users/";
     const [modalVisible, setModalVisible] = useState(false);
     const [prenom, setPrenom] = useState("");
     const [nom, setNom] = useState("");
@@ -14,12 +14,26 @@ const ProfilePage = () => {
 
     const handleAffichage = async () => {
         try{
-
+            const id_user = await AsyncStorage.getItem('id_user');
+            const token = await AsyncStorage.getItem('token');
+            console.log(id_user);
+            const data = await fetch(base + id_user, {
+                method: 'GET',
+                headers: {
+                    "Content-Type" : "application/json",
+                    "Authorization" : `Bearer ${token}`
+                }
+                }
+            )
+            const text = await data.text();
+            const json = await JSON.parse(text);
+            console.log(json);
         } catch (error) {
             console.log("Erreur d'affichage : " + error);
         }
     }
-    console.log(AsyncStorage.getItem('id_user'));
+    handleAffichage();
+    
     return (
         <View style={styles.view1}>
             <Text style={styles.titre1}>Hi {prenom} !</Text>
