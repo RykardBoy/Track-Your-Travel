@@ -21,10 +21,17 @@ const RegisterPage = ({ navigation }) => {
         });
 
         const rep = await reponse.text();
+        let reponseServer = JSON.parse(rep);
         console.log(rep);
+        if (reponse.ok && firstname && lastname && username && email && country && password){
+            alert('Registration successful!');
+            navigation.navigate('Login');     
+        } else {
+            alert(reponseServer['message']);
+        }
 
     } catch (error) {
-        console.log(error);
+        console.log("Erreur d'enregistrement : " + error);
     }
 
     // navigation.navigate('Login');
