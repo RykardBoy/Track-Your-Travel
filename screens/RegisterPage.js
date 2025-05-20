@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 const RegisterPage = ({ navigation }) => {
+    const base = "http://10.177.235.226:8000/api/registerUser";
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [username, setUsername] = useState('');
@@ -9,10 +10,26 @@ const RegisterPage = ({ navigation }) => {
     const [country, setCountry] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleRegister = () => {
-        alert('Registration successful!');
-        navigation.navigate('Login');
-    };
+    const handleRegister = async () => {
+    try {
+        const reponse = await fetch(base, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"  // <<< À ajouter
+            },
+            body: JSON.stringify({ firstname, lastname, username, email, country, password })
+        });
+
+        const rep = await reponse.text();
+        console.log(rep);
+
+    } catch (error) {
+        console.log(error);
+    }
+
+    // navigation.navigate('Login');
+};
+
 
     return (
         <View style={styles.container}>
