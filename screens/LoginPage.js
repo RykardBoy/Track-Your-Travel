@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import RegisterPage from './RegisterPage';
 import MainNavigation from '../navigations/MainNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useScrollToTop } from '@react-navigation/native';
 
 
 const LoginPage = ({ navigation }) => { 
@@ -12,6 +13,7 @@ const LoginPage = ({ navigation }) => {
     const base = "http://10.177.235.226:8000/api/login"; // --> changer l'adresse à chaque lancement d'ngrok
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [id_user, setIdUser] = useState('');
 
     const handleLogin = async () => {
         try {
@@ -33,13 +35,15 @@ const LoginPage = ({ navigation }) => {
           
           if (response.ok && tokenCorriger) {
             await AsyncStorage.setItem('token', tokenCorriger);
+            const id = data['user']['id_user']
+            await AsyncStorage.setItem('id_user', id.toString());
             console.log("Connexion Réussie !")
             navigation.navigate('Home');
           }
         } catch (error) {
           console.log('Erreur de connexion', error);
         }
-      };
+    };
 
     const handleRegister = () => {
         navigation.navigate('Register'); // Redirection vers la page d'inscription

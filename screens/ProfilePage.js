@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, Modal, TextInput } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfilePage = () => {
+    const base = "http://10.177.235.226:8000/api/user/";
     const [modalVisible, setModalVisible] = useState(false);
-    const [prenom, setPrenom] = useState("Ricardo");
-    const [nom, setNom] = useState("Flugel");
-    const [username, setUsername] = useState("ricardo.flugel");
-    const [email, setEmail] = useState("rf@gmail.com");
-    const [phone, setPhone] = useState("076 353 12 63");
-    const [country, setCountry] = useState("Suisse");
+    const [prenom, setPrenom] = useState("");
+    const [nom, setNom] = useState("");
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [country, setCountry] = useState("");
 
+    const handleAffichage = async () => {
+        try{
+
+        } catch (error) {
+            console.log("Erreur d'affichage : " + error);
+        }
+    }
+    console.log(AsyncStorage.getItem('id_user'));
     return (
         <View style={styles.view1}>
             <Text style={styles.titre1}>Hi {prenom} !</Text>

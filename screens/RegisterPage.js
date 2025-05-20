@@ -15,7 +15,7 @@ const RegisterPage = ({ navigation }) => {
         const reponse = await fetch(base, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"  // <<< À ajouter
+                "Content-Type": "application/json"  
             },
             body: JSON.stringify({ firstname, lastname, username, email, country, password })
         });
@@ -34,7 +34,6 @@ const RegisterPage = ({ navigation }) => {
         console.log("Erreur d'enregistrement : " + error);
     }
 
-    // navigation.navigate('Login');
 };
 
 
