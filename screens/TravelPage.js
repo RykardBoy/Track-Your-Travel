@@ -1,15 +1,58 @@
 import * as React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import StarRating from '../components/StarRating';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TravelPage = () => {
+    const base = "http://10.177.235.226:8000/api/countries";
+    const id = AsyncStorage.getItem("id_user");
+    const token = AsyncStorage.getItem("token");
+    const [countries, setCountries] = useState([]);
     const [number, onChangeNumber] = useState('');
     const [rating, setRating] = useState(0);
-    const [selectedCountry, setSelectedCountry] = useState("CR");
+    const [selectedCountry, setSelectedCountry] = useState(null);
     const [saved, setSaved] = useState(false);
 
+    
+    useEffect(() => {
+        const fetchCountries = async () => {
+            try {
+                const token = await AsyncStorage.getItem("token");
+                if (!token) {
+                    console.error("Token manquant !");
+                    return;
+                }
+
+                const response = await fetch(base, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+                console.log("Réponse API /countries :", data);
+
+                if (Array.isArray(data)) {
+                    setCountries(data);
+                    if (data.length > 0) {
+                        setSelectedCountry(data[0]['id_country']);
+                    }
+                } else {
+                    console.error("Réponse inattendue :", data);
+                }
+            } catch (error) {
+                console.error("Erreur réseau ou parsing :", error);
+            }
+        };
+
+        fetchCountries();
+    }, []);
+    
+    
     const handleSave = () => {
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
@@ -25,15 +68,17 @@ const TravelPage = () => {
                 <Image source={require('../assets/destination.png')} style={styles.image} />
             </View>
             <Picker
+                style={styles.picker}
                 selectedValue={selectedCountry}
                 onValueChange={(itemValue) => setSelectedCountry(itemValue)}
-                style={styles.picker}
             >
-                <Picker.Item label="Croatie" value="CR" />
-                <Picker.Item label="Philippines" value="PH" />
-                <Picker.Item label="Brésil" value="BR" />
-                <Picker.Item label="Japon" value="JA" />
-                <Picker.Item label="Espagne" value="ES" />
+                {countries.map((country) => (
+                    <Picker.Item
+                        key={country.id_country}
+                        label={country.name}    
+                        value={country.id_country}     
+                    />
+                ))}
             </Picker>
 
             {/* Activity Input */}
