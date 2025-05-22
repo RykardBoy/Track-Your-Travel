@@ -26,7 +26,6 @@ const ProfilePage = () => {
             )
             const text = await data.text();
             const json = await JSON.parse(text);
-            console.log(json);
             setPrenom(json['firstname']);
             setNom(json['lastname']);
             setUsername(json['username']);
@@ -35,6 +34,30 @@ const ProfilePage = () => {
         } catch (error) {
             console.log("Erreur d'affichage : " + error);
         }
+    }
+
+    const handleUpdate = async () => {
+        const updateBase = "http://10.177.235.226:8000/api/updateUser/";
+        const id = await AsyncStorage.getItem('id_user')
+        const token = await AsyncStorage.getItem('token');
+        try{
+            fetch(updateBase + id, {
+            method: "PUT",
+            headers: {
+                "Content-Type" : "application/json",
+                "Authorization" : `Bearer ${token}`
+            },
+            body: JSON.stringify({firstname: prenom, lastname: nom, username: username, email: email, country: country})
+                
+            }
+            )
+            .then((res)=>res.json())
+            .then((res) => console.log(res));
+        } catch (error) {
+            console.log("Message du serveur : " + error)
+        }
+        
+
     }
     
     useEffect(()=>{
@@ -72,8 +95,11 @@ const ProfilePage = () => {
                         <TextInput style={styles.input} value={username} onChangeText={setUsername} placeholder="Username" />
                         <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="Email" keyboardType="email-address" />
                         <TextInput style={styles.input} value={country} onChangeText={setCountry} placeholder="Country" />
-                        <Pressable style={styles.bouton1} onPress={() => setModalVisible(false)}>
-                            <Text style={styles.boutonText}>Save</Text>
+                        <Pressable style={styles.bouton1}>
+                            <Text style={styles.boutonText} onPress={()=> {
+                                handleUpdate()
+                                setModalVisible(false)
+                                }}>Save</Text>
                         </Pressable>
                     </View>
                 </View>
