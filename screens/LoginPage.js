@@ -10,7 +10,7 @@ const LoginPage = ({ navigation }) => {
     
     // COMMANDE QU'IL FAUT LANCER POUR NGROK : ngrok http http://localhost:8000
     
-    const base = "http://10.177.235.226:8000/api/login"; // --> changer l'adresse à chaque lancement d'ngrok
+    const base = "http://172.20.10.2:8000/api/login"; // --> changer l'adresse à chaque lancement d'ngrok
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [id_user, setIdUser] = useState('');

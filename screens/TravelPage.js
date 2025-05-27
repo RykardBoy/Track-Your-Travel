@@ -6,7 +6,7 @@ import StarRating from '../components/StarRating';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TravelPage = () => {
-    const base = "http://10.177.235.226:8000/api/countries";
+    const base = "http://172.20.10.2:8000/api/countries";
     const id = AsyncStorage.getItem("id_user");
     const token = AsyncStorage.getItem("token");
     const [countries, setCountries] = useState([]);
@@ -51,7 +51,6 @@ const TravelPage = () => {
 
         fetchCountries();
     }, []);
-    
     
     const handleSave = () => {
         setSaved(true);
