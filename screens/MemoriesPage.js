@@ -1,57 +1,75 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import MemoriesDetails from '../components/MemoriesDetails';
-
-
-const memories = [
-    {
-        id: '1',
-        title: 'Philippines',
-        description: 'We ate a lot and swam with whale sharks',
-        image: require('../assets/ph.jpg')
-    },
-    {
-        id: '2',
-        title: 'Switzerland',
-        description: 'Exploring the Swiss Alps with breathtaking views.',
-        image: require('../assets/sw-hiking.jpg')
-    },
-    {
-        id: '3',
-        title: 'Croatia',
-        description: 'Tasting delicious street food in the vibrant markets of Split.',
-        image: require('../assets/cr.jpg')
-    }
-];
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MemoriesPage = () => {
+    const [memories, setMemories] = useState([]);
     const [selectedMemory, setSelectedMemory] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
+
+    const baseUrl = "http://172.20.10.2:8000/api/getImages"; // ajustable si nécessaire
+
+    useEffect(() => {
+    const fetchMemories = async () => {
+        try {
+            const id_user = await AsyncStorage.getItem("id_user");
+            const token = await AsyncStorage.getItem('token');
+            if (!id_user || !token) {
+                console.error("ID utilisateur ou token manquant.");
+                return;
+            }
+
+            const response = await fetch(`${baseUrl}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data = await response.json();
+            console.log("Souvenirs :", data); // pour debug
+            setMemories(data);
+        } catch (error) {
+            console.error("Erreur lors du chargement des souvenirs :", error);
+        }
+    };
+
+    fetchMemories();
+}, []);
+
 
     const openMemoryDetails = (memory) => {
         setSelectedMemory(memory);
         setModalVisible(true);
     };
 
+    const renderItem = ({ item }) => (
+        <TouchableOpacity onPress={() => openMemoryDetails(item)}>
+            <View style={styles.card}>
+                <Image 
+                    source={{ uri: `http://172.20.10.2:8000/${item.image}` }}
+                    style={styles.image}
+                />
+
+                <Text style={styles.cardTitle}>Country #{item.id_country}</Text>
+                <Text style={styles.cardDescription}>{item.description}</Text>
+                <Text style={styles.cardRating}>⭐ {item.nb_stars}/10</Text>
+            </View>
+        </TouchableOpacity>
+    );
+
     return (
         <View style={styles.view1}>
             <Text style={styles.titre}>Travel Memories</Text>
             <FlatList 
                 data={memories}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => openMemoryDetails(item)}>
-                        <View style={styles.card}>
-                            <Image source={item.image} style={styles.image} /> 
-                            <Text style={styles.cardTitle}>{item.title}</Text>
-                            <Text style={styles.cardDescription}>{item.description}</Text>
-                        </View>
-                    </TouchableOpacity>
-                )}
+                keyExtractor={(item) => item.id_user_country.toString()}
+                renderItem={renderItem}
                 contentContainerStyle={{ alignItems: 'center' }}
             />
 
-            {/* Pop-up */}
             <MemoriesDetails 
                 visible={modalVisible} 
                 memory={selectedMemory} 
@@ -102,6 +120,12 @@ const styles = StyleSheet.create({
         color: '#555',
         textAlign: 'center',
         marginTop: 5,
+    },
+    cardRating: {
+        marginTop: 5,
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#333',
     }
 });
 
