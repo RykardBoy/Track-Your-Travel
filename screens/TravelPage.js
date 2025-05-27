@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, Alert } fro
 import { Picker } from "@react-native-picker/picker";
 import StarRating from '../components/StarRating';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
 
 const TravelPage = () => {
     const base = "http://172.20.10.2:8000/api/countries";
@@ -57,6 +58,30 @@ const TravelPage = () => {
         setTimeout(() => setSaved(false), 3000);
     };
 
+    const openGallery = async () => {
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (!permissionResult.granted) {
+            Alert.alert("Permission requise", "L'accès à la galerie est nécessaire.");
+            return;
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setSelectedImage(result.assets[0].uri);
+            console.log("Image choisie :", result.assets[0].uri);
+        }
+    };
+
+
+
+
+
     return (
         <View style={styles.view1}>
             <Text style={styles.titre1}>Where did you go?</Text>
@@ -98,9 +123,10 @@ const TravelPage = () => {
                 <Text style={styles.texte}>Save your adventure with pictures:</Text>
                 <Image source={require('../assets/pictures.png')} style={styles.image} />
             </View>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={openGallery}>
                 <Text style={styles.buttonText}>Add pictures</Text>
             </TouchableOpacity>
+
 
             {/* Rating */}
             <View style={styles.section}>
