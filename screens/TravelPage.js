@@ -5,16 +5,20 @@ import { Picker } from "@react-native-picker/picker";
 import StarRating from '../components/StarRating';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
+import { Platform } from 'react-native';
+
 
 const TravelPage = () => {
     const base = "http://172.20.10.2:8000/api/countries";
     const id = AsyncStorage.getItem("id_user");
     const token = AsyncStorage.getItem("token");
     const [countries, setCountries] = useState([]);
-    const [number, onChangeNumber] = useState('');
+    const [description, setDescription] = useState('');
     const [rating, setRating] = useState(0);
     const [selectedCountry, setSelectedCountry] = useState(null);
     const [saved, setSaved] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+
 
     
     useEffect(() => {
@@ -79,6 +83,59 @@ const TravelPage = () => {
     };
 
 
+    const saveSouvenir = async () => {
+    try {
+        const id_user = await AsyncStorage.getItem("id_user");
+        const token = await AsyncStorage.getItem("token");
+
+        if (!token) {
+            Alert.alert("Erreur", "Token manquant.");
+            return;
+        }
+
+        const formData = new FormData();
+
+        formData.append("id_user", id_user);
+        formData.append("id_country", selectedCountry);
+        formData.append("description", description);
+        formData.append("nb_stars", rating.toString());
+
+        if (selectedImage) {
+            const filename = selectedImage.split('/').pop();
+            const match = /\.(\w+)$/.exec(filename);
+            const type = match ? `image/${match[1]}` : `image`;
+
+            formData.append("image", {
+                uri: selectedImage,
+                name: filename,
+                type: type,
+            });
+        }
+
+        const response = await fetch("http://172.20.10.2:8000/api/addSouvenir", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+            },
+            body: formData,
+        });
+
+        const data = await response.json();
+        console.log("Réponse du serveur :", data);
+
+        if (response.ok) {
+            setSaved(true);
+            setTimeout(() => setSaved(false), 3000);
+        } else {
+            Alert.alert("Erreur", data.message || "Échec de l'enregistrement.");
+        }
+
+    } catch (error) {
+        console.error("Erreur lors de l'enregistrement :", error);
+        Alert.alert("Erreur", "Une erreur est survenue.");
+    }
+};
 
 
 
@@ -112,8 +169,8 @@ const TravelPage = () => {
             </View>
             <TextInput
                 style={styles.input}
-                onChangeText={onChangeNumber}
-                value={number}
+                onChangeText={setDescription}
+                value={description}
                 placeholder='snorkeling, sleeping..'
                 placeholderTextColor="#777"
             />
@@ -136,7 +193,7 @@ const TravelPage = () => {
             <StarRating rating={rating} onRate={setRating} />
 
             {/* Save Button */}
-            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <TouchableOpacity style={styles.saveButton} onPress={saveSouvenir}>
                 <Image source={require('../assets/diskette.png')} style={styles.image} />
             </TouchableOpacity>
 
