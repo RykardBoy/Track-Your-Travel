@@ -52,10 +52,9 @@ const MemoriesPage = () => {
                     source={{ uri: `http://172.20.10.2:8000/${item.image}` }}
                     style={styles.image}
                 />
-
                 <Text style={styles.cardTitle}>Country #{item.id_country}</Text>
                 <Text style={styles.cardDescription}>{item.description}</Text>
-                <Text style={styles.cardRating}>⭐ {item.nb_stars}/10</Text>
+                <Text style={styles.cardRating}>⭐ {item.nb_stars}/5</Text>
             </View>
         </TouchableOpacity>
     );
