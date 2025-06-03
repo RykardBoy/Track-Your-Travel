@@ -1,17 +1,56 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NutshellPage = () => {
     const [expanded, setExpanded] = useState(null);
+    const [favoriteCountry, setFavoriteCountry] = useState('Loading...');
+
+    const toggleExpand = (id) => {
+        setExpanded(expanded === id ? null : id);
+    };
+
+    useEffect(() => {
+        const fetchFavoriteCountry = async () => {
+            try {
+                const id_user = await AsyncStorage.getItem('id_user');
+                const token = await AsyncStorage.getItem('token');
+                if (!id_user || !token) {
+                    console.warn("ID utilisateur ou token manquant");
+                    return;
+                }
+
+                const response = await fetch(`http://172.20.10.2:8000/api/favorite-country/${id_user}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then((res) => res.json())
+                .then((res)=>{
+                    console.log(res)
+                    setFavoriteCountry(res.favorite_country + " | visits : " + res.visits)
+                });
+
+                
+            } catch (error) {
+                console.error("Erreur lors de la récupération du pays favori :", error);
+                setFavoriteCountry("Erreur");
+            }
+        };
+
+        fetchFavoriteCountry();
+    }, []);
 
     const data = [
         {
             id: '1',
             icon: 'map-marker-alt',
             title: 'Favorite Country',
-            details: ['Philippines']
+            details: [favoriteCountry],
         },
         {
             id: '2',
@@ -32,10 +71,6 @@ const NutshellPage = () => {
             details: ['3 countries']
         }
     ];
-
-    const toggleExpand = (id) => {
-        setExpanded(expanded === id ? null : id);
-    };
 
     return (
         <View style={styles.view1}>
@@ -61,7 +96,7 @@ const NutshellPage = () => {
             />
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     view1: {

@@ -8,7 +8,7 @@ const MemoriesPage = () => {
     const [selectedMemory, setSelectedMemory] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
-    const baseUrl = "http://172.20.10.2:8000/api/getImages"; // ajustable si nécessaire
+    const baseUrl = "http://172.20.10.2:8000/api/getImages";
 
     useEffect(() => {
     const fetchMemories = async () => {
