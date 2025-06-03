@@ -3,7 +3,7 @@ import { View, Text, Image, Pressable, StyleSheet, Modal, TextInput } from "reac
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfilePage = () => {
-    const base = "http://10.177.235.226:8000/api/users/";
+    const base = "http://172.20.10.2:8000/api/users/";
     const [modalVisible, setModalVisible] = useState(false);
     const [prenom, setPrenom] = useState("");
     const [nom, setNom] = useState("");
@@ -37,7 +37,7 @@ const ProfilePage = () => {
     }
 
     const handleUpdate = async () => {
-        const updateBase = "http://10.177.235.226:8000/api/updateUser/";
+        const updateBase = "http://172.20.10.2:8000/api/updateUser/";
         const id = await AsyncStorage.getItem('id_user')
         const token = await AsyncStorage.getItem('token');
         try{
