@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const NutshellPage = () => {
     const [expanded, setExpanded] = useState(null);
     const [favoriteCountry, setFavoriteCountry] = useState('Loading...');
+    const [kmTravelled, setKmTravelled] = useState('Loading...');
 
     const toggleExpand = (id) => {
         setExpanded(expanded === id ? null : id);
@@ -42,7 +43,34 @@ const NutshellPage = () => {
             }
         };
 
+        const fetchKmTravelled = async () => {
+            try{
+                const id_user = await AsyncStorage.getItem('id_user');
+                const token = await AsyncStorage.getItem('token');
+                if (!id_user || !token) {
+                    console.warn("ID utilisateur ou token manquant");
+                    return;
+                }
+
+                const response = await fetch(`http://172.20.10.2:8000/api/countryKmTravelled/${id_user}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                })
+                
+                const res = await response.json();
+
+                console.log(res);
+                setKmTravelled(res.total_km + " KM");
+            }catch{
+
+            }
+        }
+
         fetchFavoriteCountry();
+        fetchKmTravelled();
     }, []);
 
     const data = [
@@ -56,7 +84,7 @@ const NutshellPage = () => {
             id: '2',
             icon: 'plane',
             title: 'Numbers of KM traveled',
-            details: ['120000 KM']
+            details: [kmTravelled]
         },
         {
             id: '3',
