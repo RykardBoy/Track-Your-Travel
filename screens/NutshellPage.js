@@ -8,6 +8,8 @@ const NutshellPage = () => {
     const [expanded, setExpanded] = useState(null);
     const [favoriteCountry, setFavoriteCountry] = useState('Loading...');
     const [kmTravelled, setKmTravelled] = useState('Loading...');
+    const [picturesTaken, setPicturesTaken] = useState('');
+    const [nbVisitedCountries, setNbVisitedCountries] = useState('');
 
     const toggleExpand = (id) => {
         setExpanded(expanded === id ? null : id);
@@ -39,7 +41,7 @@ const NutshellPage = () => {
                 
             } catch (error) {
                 console.error("Erreur lors de la récupération du pays favori :", error);
-                setFavoriteCountry("Erreur");
+                setFavoriteCountry("Error");
             }
         };
 
@@ -65,12 +67,68 @@ const NutshellPage = () => {
                 console.log(res);
                 setKmTravelled(res.total_km + " KM");
             }catch{
+                console.error("Erreur lors de la récupération des KM :", error);
+                setKmTravelled("Error");
+            }
+        }
 
+        const fetchNbPictures = async () => {
+            try{
+                const id_user = await AsyncStorage.getItem('id_user');
+                const token = await AsyncStorage.getItem('token');
+                if (!id_user || !token) {
+                    console.warn("ID utilisateur ou token manquant");
+                    return;
+                }
+
+                const response = await fetch(`http://172.20.10.2:8000/api/countUserPhotos/${id_user}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                })
+                
+                const res = await response.json();
+
+                console.log(res);
+                setPicturesTaken(res.total_photos + " pictures taken");
+            } 
+            catch {
+                setPicturesTaken("Error");
+            }
+        }
+
+        const fetchNbVisitedCountries = async () => {
+            try{
+                const id_user = await AsyncStorage.getItem('id_user');
+                const token = await AsyncStorage.getItem('token');
+                if (!id_user || !token) {
+                    console.warn("ID utilisateur ou token manquant");
+                    return;
+                }
+
+                const response = await fetch(`http://172.20.10.2:8000/api/countVisitedCountries/${id_user}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                })
+                
+                const res = await response.json();
+
+                console.log(res);
+                setNbVisitedCountries(res.countries_visited + " countries visited");
+            } catch {
+                setNbVisitedCountries("Error")
             }
         }
 
         fetchFavoriteCountry();
         fetchKmTravelled();
+        fetchNbPictures();
+        fetchNbVisitedCountries();
     }, []);
 
     const data = [
@@ -89,14 +147,14 @@ const NutshellPage = () => {
         {
             id: '3',
             icon: 'calendar-alt',
-            title: 'Numbers of days spent abroad',
-            details: ['22 days']
+            title: 'Number of pictures taken',
+            details: [picturesTaken]
         },
         {
             id: '4',
             icon: 'globe',
             title: 'Numbers of countries visited',
-            details: ['3 countries']
+            details: [nbVisitedCountries]
         }
     ];
 
