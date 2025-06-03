@@ -29,12 +29,12 @@ const NutshellPage = () => {
                         'Content-Type': 'application/json',
                     },
                 })
-                .then((res) => res.json())
-                .then((res)=>{
-                    console.log(res)
-                    setFavoriteCountry(res.favorite_country + " | visits : " + res.visits)
-                });
+                
+                const res = await response.json();
 
+                console.log(res);
+                setFavoriteCountry(res.favorite_country + " | visits : " + res.visits);
+                
                 
             } catch (error) {
                 console.error("Erreur lors de la récupération du pays favori :", error);
