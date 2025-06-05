@@ -14,36 +14,43 @@ const LoginPage = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [id_user, setIdUser] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
 
     const handleLogin = async () => {
-        try {
-          const response = await fetch(`${base}`, {
+    setErrorMessage(''); // Réinitialise le message d'erreur à chaque tentative
+    try {
+        const response = await fetch(`${base}`, {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ username, password }),
-          });
+        });
 
-          const text = await response.text();
-          console.log('Réponse brute du serveur :', text); // ← debug visible dans Metro
-    
-          const data = JSON.parse(text);
-          let token = data['token'];
-          let tokenCorriger = token.substring(4, 100);
-          console.log(tokenCorriger);
-          
-          if (response.ok && tokenCorriger) {
+        const text = await response.text();
+        console.log('Réponse brute du serveur :', text);
+
+        const data = JSON.parse(text);
+        let token = data['token'];
+        let tokenCorriger = token?.substring(4, 100);
+        console.log(tokenCorriger);
+
+        if (response.ok && tokenCorriger) {
             await AsyncStorage.setItem('token', tokenCorriger);
-            const id = data['user']['id_user']
+            const id = data['user']['id_user'];
             await AsyncStorage.setItem('id_user', id.toString());
-            console.log("Connexion Réussie !")
+            console.log("Connexion Réussie !");
             navigation.navigate('Home');
-          }
-        } catch (error) {
-          console.log('Erreur de connexion', error);
+        } else {
+            setErrorMessage('Wrong username or password ! Please try again');
         }
-    };
+    } catch (error) {
+        console.log('Erreur de connexion', error);
+        setErrorMessage('Erreur de connexion au serveur.');
+    }
+};
+
 
     const handleRegister = () => {
         navigation.navigate('Register'); // Redirection vers la page d'inscription
@@ -72,6 +79,9 @@ const LoginPage = ({ navigation }) => {
                 secureTextEntry
             />
 
+            {errorMessage !== '' && (
+              <Text style={styles.errorText}>{errorMessage}</Text>
+            )}
             <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
@@ -145,7 +155,13 @@ const styles = StyleSheet.create({
         color: '#4A90E2',
         fontWeight: 'bold',
         marginTop: 5,
-    }
+    }, errorText: {
+    color: 'red',
+    fontSize: 14,
+    marginBottom: 10,
+    textAlign: 'center',
+},
+
 });
 
 export default LoginPage;
