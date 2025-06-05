@@ -7,38 +7,56 @@ const MemoriesPage = () => {
     const [memories, setMemories] = useState([]);
     const [selectedMemory, setSelectedMemory] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
+    const [countryMap, setCountryMap] = useState({}); // ID pays → nom pays
 
     const baseUrl = "http://172.20.10.2:8000/api/getImages";
 
     useEffect(() => {
-    const fetchMemories = async () => {
-        try {
-            const id_user = await AsyncStorage.getItem("id_user");
-            const token = await AsyncStorage.getItem('token');
-            if (!id_user || !token) {
-                console.error("ID utilisateur ou token manquant.");
-                return;
+        const fetchMemories = async () => {
+            try {
+                const id_user = await AsyncStorage.getItem("id_user");
+                const token = await AsyncStorage.getItem('token');
+                if (!id_user || !token) {
+                    console.error("ID utilisateur ou token manquant.");
+                    return;
+                }
+
+                // Requête souvenirs
+                const response = await fetch(`${baseUrl}`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                // Requête pays
+                const nameCountry = await fetch("http://172.20.10.2:8000/api/countries", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                const data = await response.json();         // souvenirs
+                const countries = await nameCountry.json(); // liste de tous les pays
+
+                // Création du dictionnaire : { id_country: name }
+                const map = {};
+                countries.forEach(country => {
+                    map[country.id_country] = country.name;
+                });
+                setCountryMap(map);
+
+                setMemories(data);
+            } catch (error) {
+                console.error("Erreur lors du chargement des souvenirs :", error);
             }
+        };
 
-            const response = await fetch(`${baseUrl}`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
-
-            const data = await response.json();
-            console.log("Souvenirs :", data); // pour debug
-            setMemories(data);
-        } catch (error) {
-            console.error("Erreur lors du chargement des souvenirs :", error);
-        }
-    };
-
-    fetchMemories();
-}, []);
-
+        fetchMemories();
+    }, []);
 
     const openMemoryDetails = (memory) => {
         setSelectedMemory(memory);
@@ -52,7 +70,9 @@ const MemoriesPage = () => {
                     source={{ uri: `http://172.20.10.2:8000/${item.image}` }}
                     style={styles.image}
                 />
-                <Text style={styles.cardTitle}>Country #{item.id_country}</Text>
+                <Text style={styles.cardTitle}>
+                    {countryMap[item.id_country] || `Country #${item.id_country}`}
+                </Text>
                 <Text style={styles.cardDescription}>{item.description}</Text>
                 <Text style={styles.cardRating}>⭐ {item.nb_stars}/5</Text>
             </View>
@@ -68,7 +88,6 @@ const MemoriesPage = () => {
                 renderItem={renderItem}
                 contentContainerStyle={{ alignItems: 'center' }}
             />
-
             <MemoriesDetails 
                 visible={modalVisible} 
                 memory={selectedMemory} 
