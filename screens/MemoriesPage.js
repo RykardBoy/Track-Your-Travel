@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
 import MemoriesDetails from '../components/MemoriesDetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -7,74 +7,106 @@ const MemoriesPage = () => {
     const [memories, setMemories] = useState([]);
     const [selectedMemory, setSelectedMemory] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
-    const [countryMap, setCountryMap] = useState({}); // ID pays → nom pays
+    const [countryNames, setCountryNames] = useState({});
 
-    const baseUrl = "http://172.20.10.2:8000/api/getImages";
+    const baseUrl = "http://172.20.10.2:8000/api";
 
     useEffect(() => {
-        const fetchMemories = async () => {
-            try {
-                const id_user = await AsyncStorage.getItem("id_user");
-                const token = await AsyncStorage.getItem('token');
-                if (!id_user || !token) {
-                    console.error("ID utilisateur ou token manquant.");
-                    return;
-                }
-
-                // Requête souvenirs
-                const response = await fetch(`${baseUrl}`, {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                });
-
-                // Requête pays
-                const nameCountry = await fetch("http://172.20.10.2:8000/api/countries", {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                });
-
-                const data = await response.json();         // souvenirs
-                const countries = await nameCountry.json(); // liste de tous les pays
-
-                // Création du dictionnaire : { id_country: name }
-                const map = {};
-                countries.forEach(country => {
-                    map[country.id_country] = country.name;
-                });
-                setCountryMap(map);
-
-                setMemories(data);
-            } catch (error) {
-                console.error("Erreur lors du chargement des souvenirs :", error);
-            }
-        };
-
         fetchMemories();
     }, []);
 
-    const openMemoryDetails = (memory) => {
-        setSelectedMemory(memory);
-        setModalVisible(true);
+    const fetchMemories = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+
+            const response = await fetch(`${baseUrl}/getImages`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const countryResponse = await fetch(`${baseUrl}/countries`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const data = await response.json();
+            const countries = await countryResponse.json();
+
+            const nameMap = {};
+            countries.forEach(country => {
+                nameMap[country.id_country] = country.name;
+            });
+
+            setCountryNames(nameMap);
+            setMemories(data);
+        } catch (error) {
+            console.error("Error fetching memories:", error);
+        }
+    };
+
+    const confirmDelete = (id_country) => {
+        Alert.alert(
+            "Confirm Deletion",
+            "Are you sure you want to delete this memory?",
+            [
+                { text: "Cancel", style: "cancel" },
+                { text: "Delete", style: "destructive", onPress: () => handleDelete(id_country) }
+            ]
+        );
+    };
+
+    const handleDelete = async (id_country) => {
+        try {
+            const token = await AsyncStorage.getItem("token");
+
+            const response = await fetch(`${baseUrl}/deleteSouvenir`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id_country }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                Alert.alert("Success", result.message || "Memory deleted");
+                fetchMemories(); // refresh list
+            } else {
+                Alert.alert("Error", result.message || "Failed to delete");
+            }
+        } catch (error) {
+            console.error("Delete error:", error);
+            Alert.alert("Error", "An error occurred while deleting.");
+        }
     };
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity onPress={() => openMemoryDetails(item)}>
+        <TouchableOpacity onPress={() => setSelectedMemory(item)}>
             <View style={styles.card}>
-                <Image 
+                <Image
                     source={{ uri: `http://172.20.10.2:8000/${item.image}` }}
                     style={styles.image}
                 />
                 <Text style={styles.cardTitle}>
-                    {countryMap[item.id_country] || `Country #${item.id_country}`}
+                    {countryNames[item.id_country] || `Country #${item.id_country}`}
                 </Text>
                 <Text style={styles.cardDescription}>{item.description}</Text>
                 <Text style={styles.cardRating}>⭐ {item.nb_stars}/5</Text>
+
+                <TouchableOpacity
+                    style={styles.deleteButton}
+                    onPress={() => confirmDelete(item.id_country)}
+                >
+                    <Text style={styles.deleteText}>Delete</Text>
+                </TouchableOpacity>
             </View>
         </TouchableOpacity>
     );
@@ -82,16 +114,17 @@ const MemoriesPage = () => {
     return (
         <View style={styles.view1}>
             <Text style={styles.titre}>Travel Memories</Text>
-            <FlatList 
+            <FlatList
                 data={memories}
                 keyExtractor={(item) => item.id_user_country.toString()}
                 renderItem={renderItem}
                 contentContainerStyle={{ alignItems: 'center' }}
             />
-            <MemoriesDetails 
-                visible={modalVisible} 
-                memory={selectedMemory} 
-                onClose={() => setModalVisible(false)} 
+
+            <MemoriesDetails
+                visible={modalVisible}
+                memory={selectedMemory}
+                onClose={() => setModalVisible(false)}
             />
         </View>
     );
@@ -144,6 +177,17 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: '#333',
+    },
+    deleteButton: {
+        marginTop: 10,
+        paddingVertical: 6,
+        paddingHorizontal: 20,
+        backgroundColor: '#d9534f',
+        borderRadius: 8,
+    },
+    deleteText: {
+        color: 'white',
+        fontWeight: 'bold',
     }
 });
 
