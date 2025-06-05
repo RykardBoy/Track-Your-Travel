@@ -2,17 +2,26 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 const RegisterPage = ({ navigation }) => {
-    const base = "http://10.177.235.226:8000/api/registerUser";
+    const base = "http://172.20.10.2:8000/api/registerUser";
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [country, setCountry] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
 
     const handleRegister = async () => {
+    setErrorMessage(''); // reset error before processing
+
+    if (!firstname || !lastname || !username || !email || !country || !password) {
+        setErrorMessage('All fields are required.');
+        return;
+    }
+
     try {
-        const reponse = await fetch(base, {
+        const response = await fetch(base, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"  
@@ -20,21 +29,23 @@ const RegisterPage = ({ navigation }) => {
             body: JSON.stringify({ firstname, lastname, username, email, country, password })
         });
 
-        const rep = await reponse.text();
-        let reponseServer = JSON.parse(rep);
+        const rep = await response.text();
+        const reponseServer = JSON.parse(rep);
         console.log(rep);
-        if (reponse.ok && firstname && lastname && username && email && country && password){
+
+        if (response.ok) {
             alert('Registration successful!');
-            navigation.navigate('Login');     
+            navigation.navigate('Login');
         } else {
-            alert(reponseServer['message']);
+            setErrorMessage(reponseServer['message'] || 'Registration failed. Please try again.');
         }
 
     } catch (error) {
         console.log("Erreur d'enregistrement : " + error);
+        setErrorMessage('An error occurred during registration.');
     }
+    };
 
-};
 
 
     return (
@@ -88,6 +99,11 @@ const RegisterPage = ({ navigation }) => {
                 onChangeText={setPassword}
                 secureTextEntry
             />
+
+            {errorMessage !== '' && (
+                <Text style={styles.errorText}>{errorMessage}</Text>
+            )}
+
             <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
                 <Text style={styles.buttonText}>Register</Text>
             </TouchableOpacity>
@@ -140,7 +156,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff',
         textAlign: 'center',
+    }, errorText: {
+        color: 'red',
+        fontSize: 14,
+        marginBottom: 10,
+        textAlign: 'center',
     }
+
 });
 
 export default RegisterPage;
